@@ -1,5 +1,5 @@
-import sys
-sys.path.append('.')
+from django.core.management.base import BaseCommand, CommandError
+from django.conf import settings
 
 from scorecard.profile_data import IndicatorCalculator, MuniApiClient
 import argparse
@@ -7,31 +7,25 @@ import copy
 import csv
 import json
 
-API_URL = 'https://municipaldata.treasury.gov.za/api'
 
-def main():
+class Command(BaseCommand):
+    help = 'Tool to dump the materialised views of the municipal finance data used on the Municipal Money website.'
 
-    parser = argparse.ArgumentParser(description='Tool to dump the materialised views of the municipal finance data used on the Municipal Money website.')
-    parser.add_argument('--api-url', help='API URL to use. Default: ' + API_URL)
-    parser.add_argument('--write-csv', help='Write indicator values to dedicated CSV files in the current working directory', action='store_true')
+    def add_arguments(self, parser):
+        parser.add_argument('--write-csv', help='Write indicator values to dedicated CSV files in the current working directory', action='store_true')
 
-    args = parser.parse_args()
-    if args.api_url:
-        api_url = args.api_url
-    else:
-        api_url = API_URL
-    api_client = MuniApiClient(api_url)
+    def handle(self, *args, **options):
+        api_client = MuniApiClient(settings.API_URL_INTERNAL)
+        munis = get_munis(api_client)
 
-    munis = get_munis(api_client)
+        for muni in munis:
+            profile = get_muni_profile(api_client, muni.get('municipality.demarcation_code'))
+            muni.update(profile)
 
-    for muni in munis:
-        profile = get_muni_profile(api_client, muni.get('municipality.demarcation_code'))
-        muni.update(profile)
-
-    if args.write_csv:
-        write_csvs(munis)
-    else:
-        print(json.dumps(munis))
+        if args.write_csv:
+            write_csvs(munis)
+        else:
+            print(json.dumps(munis))
 
 
 def write_csvs(munis):
@@ -97,8 +91,3 @@ def get_munis(api_client):
     if body.get("total_cell_count") == body.get("page_size"):
         raise Exception("should page municipalities")
     return body.get("data")
-
-
-
-if __name__ == "__main__":
-    main()
