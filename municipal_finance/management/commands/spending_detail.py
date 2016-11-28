@@ -5,8 +5,10 @@ import re
 from collections import defaultdict
 
 REGEXES = {
-    'decimal_lon_lat': '^(\d+.\d+)[ ;]+(-\d+.\d+)$',
-    'known_unfilled': '^(N/A|0)?$',
+    'decimal_lon_lat': '^(?P<lon>\d+.\d+)[ ;]+(?P<lat>-\d+.\d+)$',
+    'decimal_lat_lon_neg': '^(?P<lon>3\d+.\d+)[ ;,]+(?P<lat>2\d+.\d+)$',
+    'decimal_Slat_neg_Elon': '^S(?P<lat_neg>\d+.\d+)[ ;]+E(?P<lon>\d+.\d+)$',
+    'known_non_coord': '^(N/A|0)?$',
 }
 
 FIELDNAMES = [
@@ -45,12 +47,16 @@ class Command(BaseCommand):
                     if match:
                         counts[regex_name] += 1
                         #print("%s [%s] %s %s" % (row['demarcation_code'], row['coordinates'], row['proj_desc'], row['asset_class']))
-                        #pprint(match.groups())
+                        #pprint(match.groupdict())
                         break
                 if not match:
                     print("%s [%s] %s %s" % (row['demarcation_code'], row['coordinates'], row['proj_desc'], row['asset_class']))
                     counts['no_match'] += 1
-        pprint(counts)
+        total = 0
+        for key, count in counts.iteritems():
+            total += count
+            print("%s\t%d" % (key, count))
+        print("TOTAL\t\t%d" % total)
 
 def compile_regexes():
     compileds = {}
