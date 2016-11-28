@@ -14,7 +14,6 @@ REGEXES = {
     'decimal_lat_neg_lon': '^(?P<lon>3\d+[\.,]\d+)[ ;,-]+(?P<lat>2\d+[\.,]\d+)$',
     'decimal_Slat_neg_Elon': '^S(?P<lat_neg>\d+[\.,]\d+)[ ;]+E(?P<lon>\d+[\.,]\d+)$',
     'dms_lat_negS_lonE': '^(?P<lat_deg_neg>\d+)[\xB0\xBA] ?(?P<lat_min>\d+)\' ?(?P<lat_sec>\d+\.\d+)(\"|\'\') ?S *(?P<lon_deg>\d+)[\xB0\xBA] ?(?P<lon_min>\d+)\' ?(?P<lon_sec>\d+\.\d+)(\"|\'\') ?E$',
-    'dms_lat_negS_lonE': '^(?P<lon_deg>\d+)[\xB0\xBA] ?(?P<lon_min>\d+)\' ?(?P<lon_sec>\d+\.\d+)(\"|\'\') ?E *(?P<lat_deg_neg>\d+)[\xB0\xBA] ?(?P<lat_min>\d+)\' ?(?P<lat_sec>\d+\.\d+)(\"|\'\') ?S$',
     'dms_lat_negS_lonE_comma': '^(?P<lat_deg_neg>\d+)\.(?P<lat_min>\d+)\.(?P<lat_sec>\d+,\d+) ?S *(?P<lon_deg>\d+)\.(?P<lon_min>\d+)\.(?P<lon_sec>\d+,\d+) ?E$',
     'dms_lat_negS_lonE_qmark': '^(?P<lat_deg_neg>\d+)\?(?P<lat_min>\d+)\'(?P<lat_sec>\d+\.\d+)(\'\'|\")S *(?P<lon_deg>\d+)\?(?P<lon_min>\d+)\'(?P<lon_sec>\d+\.\d+)(\'\'|\")E$',
     'dms_lon_lat': '^(?P<lon_deg>\d+)[\xB0\xBA] ?(?P<lon_min>\d+)\' ?(?P<lon_sec>\d+)\" *(?P<lat_deg>-\d+)[\xB0\xBA] ?(?P<lat_min>\d+)\' ?(?P<lat_sec>\d+)\"$',
