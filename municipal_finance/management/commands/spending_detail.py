@@ -18,6 +18,7 @@ REGEXES = {
     'decimal_lat_negS_lonE_deg': '^(?P<lat_neg>\d+[\.,]\d+)[ \xB0]+S[ ;]+(?P<lon>\d+[\.,]\d+)[ \xB0]+E$',
     'dms_lat_negS_lonE_spaced': '^(?P<lat_deg_neg>\d+) (?P<lat_min>\d+) (?P<lat_sec>\d+) s / (?P<lon_deg>\d+) (?P<lon_min>\d+) (?P<lon_sec>\d+) e$',
     'dms_lat_negS_lonE': '^(?P<lat_deg_neg>\d+)[\xB0\xBA,] ?(?P<lat_min>\d+)[\',] ?(?P<lat_sec>[\d+\.]+)(,|\"|\'\') ?S[ |]*(?P<lon_deg>\d+)[\xB0\xBA,] ?(?P<lon_min>\d+)[,\'] ?(?P<lon_sec>[\d+\.]+)(,|\"|\'\') ?E$',
+    'dms_lat_negS_lonE_zero_simple': '^(?P<lat_deg_neg>\d{2})0(?P<lat_min>\d+)`(?P<lat_sec>\d+)"S,(?P<lon_deg>\d{2})0(?P<lon_min>\d+)`(?P<lon_sec>\d+)"E,?$',
     'dms_Slat_Elon_backticks': '^S *-(?P<lat_deg>\d{2})[\xB0\xBA,0\-] ?(?P<lat_min>\d{2})[`\',] ?(?P<lat_sec>[\d+\.]+)(,|\"|\'\'|``) *E *(?P<lon_deg>\d{2})[\xB0\xBA,0\-] ?(?P<lon_min>\d{2})[,\'`] ?(?P<lon_sec>[\d+\.]+)(,|\"|\'\'|``)$',
     'dms_lat_negS_lonE_comma': '^(?P<lat_deg_neg>\d+)\.(?P<lat_min>\d+)\.(?P<lat_sec>\d+,\d+) ?S *(?P<lon_deg>\d+)\.(?P<lon_min>\d+)\.(?P<lon_sec>\d+,\d+) ?E$',
     'dms_lat_negS_lonE_qmark': '^(?P<lat_deg_neg>\d+)\?(?P<lat_min>\d+)\'(?P<lat_sec>\d+\.\d+)(\'\'|\")S *(?P<lon_deg>\d+)\?(?P<lon_min>\d+)\'(?P<lon_sec>\d+\.\d+)(\'\'|\")E$',
