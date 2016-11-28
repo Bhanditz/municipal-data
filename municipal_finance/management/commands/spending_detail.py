@@ -5,12 +5,13 @@ import re
 from collections import defaultdict
 
 REGEXES = {
-    'decimal_lon_lat': '^(?P<lon>\d+.\d+)[ ;]+(?P<lat>-\d+.\d+)$',
-    'decimal_lat_lon': '^(?P<lat>-\d+.\d+)[ ;]+(?P<lon>\d+.\d+)$',
-    'decimal_lat_lon_neg': '^(?P<lon>3\d+.\d+)[ ;,]+(?P<lat>2\d+.\d+)$',
-    'decimal_Slat_neg_Elon': '^S(?P<lat_neg>\d+.\d+)[ ;]+E(?P<lon>\d+.\d+)$',
-    'dms_lat_negS_lonE': '^(?P<lat_neg>\d+[\xB0\xBA] ?\d+\' ?\d+.\d+")S *(?P<lon>\d+[\xB0\xBA] ?\d+\' ?\d+.\d+")E$',
+    'decimal_lon_lat': '^(?P<lon>\d+\.\d+)[ ;]+(?P<lat>-\d+\.\d+)$',
+    'decimal_lat_lon': '^(?P<lat>-\d+\.\d+)[ ;,]+(?P<lon>\d+\.\d+)$',
+    'decimal_lat_neg_lon': '^(?P<lon>3\d+\.\d+)[ ;,]+(?P<lat>2\d+\.\d+)$',
+    'decimal_Slat_neg_Elon': '^S(?P<lat_neg>\d+\.\d+)[ ;]+E(?P<lon>\d+\.\d+)$',
+    'dms_lat_negS_lonE': '^(?P<lat_neg>\d+[\xB0\xBA] ?\d+\' ?\d+\.\d+")S *(?P<lon>\d+[\xB0\xBA] ?\d+\' ?\d+\.\d+")E$',
     'dms_lon_lat': '^(?P<lon>\d+[\xB0\xBA] ?\d+\' ?\d+") *(?P<lat>-\d+[\xB0\xBA] ?\d+\' ?\d+")$',
+    'dms_lat_negS_lonE_comma': '^(?P<lat_neg>\d+\.\d+\.\d+,\d+) ?S *(?P<lon>\d+\.\d+\.\d+,\d+) ?E$',
     'known_non_coord': '^(N/A|0)?$',
 }
 
