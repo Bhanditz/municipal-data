@@ -6,6 +6,7 @@ from collections import defaultdict
 
 REGEXES = {
     'decimal_lon_lat': '^(?P<lon>\d+[\.,]\d+)[\s;,]+(?P<lat>-\d+[\.,]\d+)$',
+    'decimal_lon_lat_labeled': '^[Ll]ong *= *(?P<lon>\d+[\.,]\d+)[\s;,]+[Ll]at *= *(?P<lat>-\d+[\.,]\d+)$',
     'decimal_lat_lon_labeled': '^Latitude: (?P<lat>-\d+\.\d+)[ |;,]+Longt?itude: (?P<lon>\d+\.\d+)$',
     'decimal_lat_lon': '^(?P<lat>-\d+[\.,]\d+)[\s;,]+(?P<lon>\d+[\.,]\d+)$',
     'decimal_lat_lon_unseparated': '^(?P<lat>-\d+[\.,]\d+)(?P<lon>\d{2}[\.,]\d+)$',
