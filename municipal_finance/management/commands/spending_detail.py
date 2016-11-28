@@ -5,19 +5,19 @@ import re
 from collections import defaultdict
 
 REGEXES = {
-    'decimal_lon_lat': '^(?P<lon>\d+[\.,]\d+)[\s;,:]+(?P<lat>-\d+[\.,]\d+)$',
-    'decimal_lon_lat_multi': '^(?P<lon>\d+[\.,]\d+)[\s;,:]+(?P<lat>-\d+[\.,]\d{3,6})[\d\s\.,\-]+$',
-    'decimal_lon_lat_labeled': '^[Ll]ong *= *(?P<lon>\d+[\.,]\d+)[\s;,]+[Ll]at *= *(?P<lat>-\d+[\.,]\d+)$',
-    'decimal_lon_lat_neg_labeled': '^[Ll]ong *= *(?P<lon>\d+[\.,]\d+)[\s;,]+[Ll]at *= *(?P<lat_neg>\d+[\.,]\d+)$',
-    'decimal_lat_lon_labeled': '^Latitude: (?P<lat>-\d+\.\d+)[ |;,]+Longt?itude: (?P<lon>\d+\.\d+)$',
-    'decimal_lat_lon': '^(?P<lat>-\d+[\.,]\d+)[\s;,]+(?P<lon>\d+[\.,]\d+)$',
+    'decimal_lon_lat': '^(?P<lon>\d+[\.,]\d+)[\s;,:/]+(?P<lat>-\d+[\.,]\d+)$',
+    'decimal_lon_lat_multi': '^(?P<lon>\d+[\.,]\d+)[\s;,:/]+(?P<lat>-\d+[\.,]\d{3,6})[\d\s\.,\-]+$',
+    'decimal_lon_lat_labeled': '^[Ll]ong *= *(?P<lon>\d+[\.,]\d+)[\s;,/]+[Ll]at *= *(?P<lat>-\d+[\.,]\d+)$',
+    'decimal_lon_lat_neg_labeled': '^[Ll]ong *= *(?P<lon>\d+[\.,]\d+)[\s;,/]+[Ll]at *= *(?P<lat_neg>\d+[\.,]\d+)$',
+    'decimal_lat_lon_labeled': '^Latitude: (?P<lat>-\d+\.\d+)[ |;,/]+Longt?itude: (?P<lon>\d+\.\d+)$',
+    'decimal_lat_lon': '^(?P<lat>-\d+[\.,]\d+)[\s;,/]+(?P<lon>\d+[\.,]\d+)$',
     'decimal_lat_lon_unseparated': '^(?P<lat>-\d+[\.,]\d+)(?P<lon>\d{2}[\.,]\d+)$',
-    'decimal_lat_neg_lon': '^(?P<lon>3\d+[\.,]\d+)[ ;,\-&]+(?P<lat>[12]\d+[\.,]\d+)$',
-    'decimal_Slat_neg_Elon': '^S(?P<lat_neg>\d+[\.,]\d+)[ ;]+E(?P<lon>\d+[\.,]\d+)$',
-    'decimal_lat_negS_lonE': '^(?P<lat_neg>\d+[\.,]\d+) *S[ ;]+(?P<lon>\d+[\.,]\d+) *E$',
-    'decimal_lat_negS_lonE_deg': '^(?P<lat_neg>\d+[\.,]\d+)[ \xB0]+S[ ;]+(?P<lon>\d+[\.,]\d+)[ \xB0]+E$',
+    'decimal_lat_neg_lon': '^(?P<lon>3\d+[\.,]\d+)[ ;,\-&/]+(?P<lat>[12]\d+[\.,]\d+)$',
+    'decimal_Slat_neg_Elon': '^S(?P<lat_neg>\d+[\.,]\d+)[ ;/]+E(?P<lon>\d+[\.,]\d+)$',
+    'decimal_lat_negS_lonE': '^(?P<lat_neg>\d+[\.,]\d+) *S[ ;/]+(?P<lon>\d+[\.,]\d+) *E$',
+    'decimal_lat_negS_lonE_deg': '^(?P<lat_neg>\d+[\.,]\d+)[ \xB0]+S[ ;/]+(?P<lon>\d+[\.,]\d+)[ \xB0]+E$',
     'dms_lat_negS_lonE_spaced': '^(?P<lat_deg_neg>\d+) (?P<lat_min>\d+) (?P<lat_sec>\d+) s / (?P<lon_deg>\d+) (?P<lon_min>\d+) (?P<lon_sec>\d+) e$',
-    'dms_lat_negS_lonE': '^(?P<lat_deg_neg>\d+)[\xB0\xBA,] ?(?P<lat_min>\d+)[\',] ?(?P<lat_sec>[\d+\.]+)(,|\"|\'\') ?S[ |]*(?P<lon_deg>\d+)[\xB0\xBA,] ?(?P<lon_min>\d+)[,\'] ?(?P<lon_sec>[\d+\.]+)(,|\"|\'\') ?E$',
+    'dms_lat_negS_lonE': '^(?P<lat_deg_neg>\d+)[\xB0\xBA,] ?(?P<lat_min>\d+)[\',] ?(?P<lat_sec>[\d+\.]+)(,|\"|\'\') ?S[ |/]*(?P<lon_deg>\d+)[\xB0\xBA,] ?(?P<lon_min>\d+)[,\'] ?(?P<lon_sec>[\d+\.]+)(,|\"|\'\') ?E$',
     'dms_lat_negS_lonE_zero_simple': '^(?P<lat_deg_neg>\d{2})0(?P<lat_min>\d+)`(?P<lat_sec>\d+)"S,(?P<lon_deg>\d{2})0(?P<lon_min>\d+)`(?P<lon_sec>\d+)"E,?$',
     'dms_Slat_Elon_backticks': '^S *-(?P<lat_deg>\d{2})[\xB0\xBA,0\-] ?(?P<lat_min>\d{2})[`\',] ?(?P<lat_sec>[\d+\.]+)(,|\"|\'\'|``) *E *(?P<lon_deg>\d{2})[\xB0\xBA,0\-] ?(?P<lon_min>\d{2})[,\'`] ?(?P<lon_sec>[\d+\.]+)(,|\"|\'\'|``)$',
     'dms_lat_negS_lonE_comma': '^(?P<lat_deg_neg>\d+)\.(?P<lat_min>\d+)\.(?P<lat_sec>\d+,\d+) ?S *(?P<lon_deg>\d+)\.(?P<lon_min>\d+)\.(?P<lon_sec>\d+,\d+) ?E$',
@@ -61,7 +61,7 @@ class Command(BaseCommand):
             reader = csv.DictReader(f, fieldnames=FIELDNAMES)
             for row in reader:
                 match = False
-                coordstr = row['coordinates'].strip().replace("\x0A", ' ')
+                coordstr = row['coordinates'].strip().replace('\xa0', ' ')
                 for regex_name, regex in compiled_rxs.iteritems():
                     match = regex.match(coordstr)
                     if match:
