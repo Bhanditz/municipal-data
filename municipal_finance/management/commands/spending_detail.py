@@ -11,7 +11,7 @@ REGEXES = {
     'decimal_lat_lon_labeled': '^Latitude: (?P<lat>-\d+\.\d+)[ |;,]+Longt?itude: (?P<lon>\d+\.\d+)$',
     'decimal_lat_lon': '^(?P<lat>-\d+[\.,]\d+)[\s;,]+(?P<lon>\d+[\.,]\d+)$',
     'decimal_lat_lon_unseparated': '^(?P<lat>-\d+[\.,]\d+)(?P<lon>\d{2}[\.,]\d+)$',
-    'decimal_lat_neg_lon': '^(?P<lon>3\d+[\.,]\d+)[ ;,-]+(?P<lat>2\d+[\.,]\d+)$',
+    'decimal_lat_neg_lon': '^(?P<lon>3\d+[\.,]\d+)[ ;,\-]+(?P<lat>2\d+[\.,]\d+)$',
     'decimal_Slat_neg_Elon': '^S(?P<lat_neg>\d+[\.,]\d+)[ ;]+E(?P<lon>\d+[\.,]\d+)$',
     'decimal_lat_negS_lonE': '^(?P<lat_neg>\d+[\.,]\d+) *S[ ;]+(?P<lon>\d+[\.,]\d+) *E$',
     'dms_lat_negS_lonE_spaced': '^(?P<lat_deg_neg>\d+) (?P<lat_min>\d+) (?P<lat_sec>\d+) s / (?P<lon_deg>\d+) (?P<lon_min>\d+) (?P<lon_sec>\d+) e$',
@@ -21,7 +21,7 @@ REGEXES = {
     'dms_lon_lat': '^(?P<lon_deg>\d+)[\xB0\xBA] ?(?P<lon_min>\d+)\' ?(?P<lon_sec>\d+)\" *(?P<lat_deg>-\d+)[\xB0\xBA] ?(?P<lat_min>\d+)\' ?(?P<lat_sec>\d+)\"$',
     'dms_lonE_lat_negS': '^(?P<lon_deg>\d+)[\xB0\xBA] ?(?P<lon_min>\d+)[\'\?] ?(?P<lon_sec>[\d+\.]+)(\"|\'\') *E,? *(?P<lat_deg_neg>\d+)[\xB0\xBA] ?(?P<lat_min>\d+)[\'\?] ?(?P<lat_sec>[\d+\.]+)(\"|\'\') *S$',
     'dms_lon_lat_labeled_neg': '^Long? *=? *(?P<lon_deg>\d+)[\xB0\xBA\'] ?(?P<lon_min>\d+)\' ?(?P<lon_sec>\d+\.\d+)\"[ ,=]*Lat *=? *(?P<lat_deg_neg>\d+)[\xB0\xBA\'] ?(?P<lat_min>\d+)\' ?(?P<lat_sec>[\d\.]+)[\'\"]*$',
-    'known_non_coord': '^(N/A|n/a|0|[ a-zA-Z]+|-?\d{2}[,.]\d+|\d+|\w+)?$',
+    'known_non_coord': '^(N/A|n/a|0|[ a-zA-Z]+|-?\d{2}[,.]\d+|\d+|\w+|[\w\(\)\- ]+|\d+\xB0\d+\'\d+\.\d+\"[SE])?$',
 }
 
 FIELDNAMES = [
