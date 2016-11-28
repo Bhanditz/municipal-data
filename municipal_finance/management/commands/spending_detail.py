@@ -8,6 +8,7 @@ REGEXES = {
     'decimal_lon_lat': '^(?P<lon>\d+.\d+)[ ;]+(?P<lat>-\d+.\d+)$',
     'decimal_lat_lon_neg': '^(?P<lon>3\d+.\d+)[ ;,]+(?P<lat>2\d+.\d+)$',
     'decimal_Slat_neg_Elon': '^S(?P<lat_neg>\d+.\d+)[ ;]+E(?P<lon>\d+.\d+)$',
+    'dms_latS_lonE': '^(?P<lat>\d+[\xB0\xBA] ?\d+\' ?\d+.\d+")S *(?P<lon>\d+[\xB0\xBA] ?\d+\' ?\d+.\d+")E$',
     'known_non_coord': '^(N/A|0)?$',
 }
 
@@ -43,15 +44,16 @@ class Command(BaseCommand):
             for row in reader:
                 match = False
                 for regex_name, regex in compiled_rxs.iteritems():
-                    match = regex.match(row['coordinates'])
+                    match = regex.match(row['coordinates'].strip())
                     if match:
                         counts[regex_name] += 1
                         #print("%s [%s] %s %s" % (row['demarcation_code'], row['coordinates'], row['proj_desc'], row['asset_class']))
                         #pprint(match.groupdict())
                         break
                 if not match:
-                    print("%s [%s] %s %s" % (row['demarcation_code'], row['coordinates'], row['proj_desc'], row['asset_class']))
+                    pprint("%s [%s] %s %s" % (row['demarcation_code'], row['coordinates'], row['proj_desc'], row['asset_class']))
                     counts['no_match'] += 1
+        print
         total = 0
         for key, count in counts.iteritems():
             total += count
