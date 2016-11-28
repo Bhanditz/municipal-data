@@ -7,6 +7,7 @@ from collections import defaultdict
 REGEXES = {
     'decimal_lon_lat': '^(?P<lon>\d+[\.,]\d+)[\s;,]+(?P<lat>-\d+[\.,]\d+)$',
     'decimal_lon_lat_labeled': '^[Ll]ong *= *(?P<lon>\d+[\.,]\d+)[\s;,]+[Ll]at *= *(?P<lat>-\d+[\.,]\d+)$',
+    'decimal_lon_lat_neg_labeled': '^[Ll]ong *= *(?P<lon>\d+[\.,]\d+)[\s;,]+[Ll]at *= *(?P<lat_neg>\d+[\.,]\d+)$',
     'decimal_lat_lon_labeled': '^Latitude: (?P<lat>-\d+\.\d+)[ |;,]+Longt?itude: (?P<lon>\d+\.\d+)$',
     'decimal_lat_lon': '^(?P<lat>-\d+[\.,]\d+)[\s;,]+(?P<lon>\d+[\.,]\d+)$',
     'decimal_lat_lon_unseparated': '^(?P<lat>-\d+[\.,]\d+)(?P<lon>\d{2}[\.,]\d+)$',
@@ -18,7 +19,7 @@ REGEXES = {
     'dms_lat_negS_lonE_qmark': '^(?P<lat_deg_neg>\d+)\?(?P<lat_min>\d+)\'(?P<lat_sec>\d+\.\d+)(\'\'|\")S *(?P<lon_deg>\d+)\?(?P<lon_min>\d+)\'(?P<lon_sec>\d+\.\d+)(\'\'|\")E$',
     'dms_lon_lat': '^(?P<lon_deg>\d+)[\xB0\xBA] ?(?P<lon_min>\d+)\' ?(?P<lon_sec>\d+)\" *(?P<lat_deg>-\d+)[\xB0\xBA] ?(?P<lat_min>\d+)\' ?(?P<lat_sec>\d+)\"$',
     'dms_lonE_lat_negS': '^(?P<lon_deg>\d+)[\xB0\xBA] ?(?P<lon_min>\d+)[\'\?] ?(?P<lon_sec>\d+\.\d+)(\"|\'\') *E,? *(?P<lat_deg_neg>\d+)[\xB0\xBA] ?(?P<lat_min>\d+)[\'\?] ?(?P<lat_sec>\d+\.\d+)(\"|\'\') *S$',
-    'dms_lon_lat_labeled_neg': '^Long = (?P<lon_deg>\d+)[\xB0\xBA] ?(?P<lon_min>\d+)\' ?(?P<lon_sec>\d+\.\d+)\", Lat = (?P<lat_deg_neg>\d+)[\xB0\xBA] ?(?P<lat_min>\d+)\' ?(?P<lat_sec>[\d\.]+)$',
+    'dms_lon_lat_labeled_neg': '^Long *= *(?P<lon_deg>\d+)[\xB0\xBA\'] ?(?P<lon_min>\d+)\' ?(?P<lon_sec>\d+\.\d+)\",? *Lat *= *(?P<lat_deg_neg>\d+)[\xB0\xBA\'] ?(?P<lat_min>\d+)\' ?(?P<lat_sec>[\d\.]+)[\'\"]*$',
     'known_non_coord': '^(N/A|n/a|0|[ a-zA-Z]+|-?\d{2}[,.]\d+)?$',
 }
 
