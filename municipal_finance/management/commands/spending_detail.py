@@ -12,7 +12,7 @@ REGEXES = {
     'dms_lat_negS_lonE': '^(?P<lat_neg>\d+[\xB0\xBA] ?\d+\' ?\d+\.\d+")S *(?P<lon>\d+[\xB0\xBA] ?\d+\' ?\d+\.\d+")E$',
     'dms_lon_lat': '^(?P<lon>\d+[\xB0\xBA] ?\d+\' ?\d+") *(?P<lat>-\d+[\xB0\xBA] ?\d+\' ?\d+")$',
     'dms_lat_negS_lonE_comma': '^(?P<lat_neg>\d+\.\d+\.\d+,\d+) ?S *(?P<lon>\d+\.\d+\.\d+,\d+) ?E$',
-    'known_non_coord': '^(N/A|0)?$',
+    'known_non_coord': '^(N/A|n/a|0|BVM|SBM Wide|new|Tshwane Wide|[Vv]arious ?\w*)?$',
 }
 
 FIELDNAMES = [
