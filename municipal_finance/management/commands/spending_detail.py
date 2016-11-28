@@ -1,15 +1,21 @@
 from django.core.management.base import BaseCommand
 import csv
+from pprint import pprint
+import re
+
+REGEXES = {
+    'decimal_lon_lat': '^(\d+.\d+)[ ;]+(-\d+.\d+)$',
+}
 
 FIELDNAMES = [
     "demarcation_code",
     "YEARPERIOD",
     "T_SEQ",
-    "Project Decription",
+    "proj_desc",
     "Project No",
     "IDP Goal Code",
     "Approved Y/N",
-    "Asset Class",
+    "asset_class",
     "Asset Sub-Class",
     "coordinates",
     "Total Project Estimate",
@@ -26,7 +32,21 @@ class Command(BaseCommand):
         parser.add_argument('infile', type=str)
 
     def handle(self, *args, **options):
+        compiled_rxs = compile_regexes()
         with open(options['infile'], 'rb') as f:
             reader = csv.DictReader(f, fieldnames=FIELDNAMES)
             for row in reader:
-                print(row['coordinates'])
+                for key, value in compiled_rxs.iteritems():
+                    match = value.match(row['coordinates'])
+                    if match:
+                        print("%s [%s] %s %s" % (row['demarcation_code'], row['coordinates'], row['proj_desc'], row['asset_class']))
+                        pprint(match.groups())
+                        break
+
+
+def compile_regexes():
+    compileds = {}
+    for key, value in REGEXES.iteritems():
+        print("Compiling %s" % key)
+        compileds[key] = re.compile(value)
+    return compileds
