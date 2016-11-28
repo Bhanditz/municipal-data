@@ -7,12 +7,12 @@ from collections import defaultdict
 REGEXES = {
     'decimal_lon_lat': '^(?P<lon>\d+[\.,]\d+)[\s;,]+(?P<lat>-\d+[\.,]\d+)$',
     'decimal_lat_lon_labeled': '^Latitude: (?P<lat>-\d+\.\d+)[ |;,]+Longt?itude: (?P<lon>\d+\.\d+)$',
-    'decimal_lat_lon': '^(?P<lat>-\d+[\.,]\d+)[ ;,]+(?P<lon>\d+[\.,]\d+)$',
-    'decimal_lat_neg_lon': '^(?P<lon>3\d+[\.,]\d+)[ ;,]+(?P<lat>2\d+[\.,]\d+)$',
+    'decimal_lat_lon': '^(?P<lat>-\d+[\.,]\d+)[\s;,]+(?P<lon>\d+[\.,]\d+)$',
+    'decimal_lat_neg_lon': '^(?P<lon>3\d+[\.,]\d+)[ ;,-]+(?P<lat>2\d+[\.,]\d+)$',
     'decimal_Slat_neg_Elon': '^S(?P<lat_neg>\d+[\.,]\d+)[ ;]+E(?P<lon>\d+[\.,]\d+)$',
-    'dms_lat_negS_lonE': '^(?P<lat_neg>\d+[\xB0\xBA] ?\d+\' ?\d+\.\d+")S *(?P<lon>\d+[\xB0\xBA] ?\d+\' ?\d+\.\d+")E$',
+    'dms_lat_negS_lonE': '^(?P<lat_deg_neg>\d+)[\xB0\xBA] ?(?P<lat_min>\d+)\' ?(?P<lat_sec>\d+\.\d+)"S *(?P<lon_deg>\d+)[\xB0\xBA] ?(?P<lon_min>\d+)\' ?(?P<lon_sec>\d+\.\d+)"E$',
     'dms_lon_lat': '^(?P<lon>\d+[\xB0\xBA] ?\d+\' ?\d+") *(?P<lat>-\d+[\xB0\xBA] ?\d+\' ?\d+")$',
-    'dms_lat_negS_lonE_comma': '^(?P<lat_neg>\d+\.\d+\.\d+,\d+) ?S *(?P<lon>\d+\.\d+\.\d+,\d+) ?E$',
+    'dms_lat_negS_lonE_comma': '^(?P<lat_deg_neg>\d+)\.(?P<lat_min>\d+)\.(?P<lat_sec>\d+,\d+) ?S *(?P<lon_deg>\d+)\.(?P<lon_min>\d+)\.(?P<lon_sec>\d+,\d+) ?E$',
     'dms_lat_negS_lonE_qmark': '^(?P<lat_deg_neg>\d+)\?(?P<lat_min>\d+)\'(?P<lat_sec>\d+\.\d+)(''|")S *(?P<lon_deg>\d+)\?(?P<lon_min>\d+)\'(?P<lon_sec>\d+\.\d+)(''|")E$',
     'known_non_coord': '^(N/A|n/a|0|[ a-zA-Z]+)?$',
 }
@@ -48,15 +48,16 @@ class Command(BaseCommand):
             reader = csv.DictReader(f, fieldnames=FIELDNAMES)
             for row in reader:
                 match = False
+                coordstr = row['coordinates'].strip().replace("\x0A", ' ')
                 for regex_name, regex in compiled_rxs.iteritems():
-                    match = regex.match(row['coordinates'].strip())
+                    match = regex.match(coordstr)
                     if match:
                         counts[regex_name] += 1
                         #print("%s [%s] %s %s" % (row['demarcation_code'], row['coordinates'], row['proj_desc'], row['asset_class']))
                         #pprint(match.groupdict())
                         break
                 if not match:
-                    pprint("%s [%s] %s %s" % (row['demarcation_code'], row['coordinates'], row['proj_desc'], row['asset_class']))
+                    pprint("%s [%s] %s %s" % (row['demarcation_code'], coordstr, row['proj_desc'], row['asset_class']))
                     counts['no_match'] += 1
         print
         total = 0
