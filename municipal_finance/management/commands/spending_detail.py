@@ -5,7 +5,7 @@ import re
 from collections import defaultdict
 
 REGEXES = {
-    'decimal_lon_lat': '^(?P<lon>\d+[\.,]\d+)[\s;,]+(?P<lat>-\d+[\.,]\d+)$',
+    'decimal_lon_lat': '^(?P<lon>\d+[\.,]\d+)[\s;,:]+(?P<lat>-\d+[\.,]\d+)$',
     'decimal_lon_lat_labeled': '^[Ll]ong *= *(?P<lon>\d+[\.,]\d+)[\s;,]+[Ll]at *= *(?P<lat>-\d+[\.,]\d+)$',
     'decimal_lon_lat_neg_labeled': '^[Ll]ong *= *(?P<lon>\d+[\.,]\d+)[\s;,]+[Ll]at *= *(?P<lat_neg>\d+[\.,]\d+)$',
     'decimal_lat_lon_labeled': '^Latitude: (?P<lat>-\d+\.\d+)[ |;,]+Longt?itude: (?P<lon>\d+\.\d+)$',
