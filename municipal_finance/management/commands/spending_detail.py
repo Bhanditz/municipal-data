@@ -6,9 +6,11 @@ from collections import defaultdict
 
 REGEXES = {
     'decimal_lon_lat': '^(?P<lon>\d+.\d+)[ ;]+(?P<lat>-\d+.\d+)$',
+    'decimal_lat_lon': '^(?P<lat>-\d+.\d+)[ ;]+(?P<lon>\d+.\d+)$',
     'decimal_lat_lon_neg': '^(?P<lon>3\d+.\d+)[ ;,]+(?P<lat>2\d+.\d+)$',
     'decimal_Slat_neg_Elon': '^S(?P<lat_neg>\d+.\d+)[ ;]+E(?P<lon>\d+.\d+)$',
-    'dms_latS_lonE': '^(?P<lat>\d+[\xB0\xBA] ?\d+\' ?\d+.\d+")S *(?P<lon>\d+[\xB0\xBA] ?\d+\' ?\d+.\d+")E$',
+    'dms_lat_negS_lonE': '^(?P<lat_neg>\d+[\xB0\xBA] ?\d+\' ?\d+.\d+")S *(?P<lon>\d+[\xB0\xBA] ?\d+\' ?\d+.\d+")E$',
+    'dms_lon_lat': '^(?P<lon>\d+[\xB0\xBA] ?\d+\' ?\d+") *(?P<lat>-\d+[\xB0\xBA] ?\d+\' ?\d+")$',
     'known_non_coord': '^(N/A|0)?$',
 }
 
@@ -55,9 +57,9 @@ class Command(BaseCommand):
                     counts['no_match'] += 1
         print
         total = 0
-        for key, count in counts.iteritems():
-            total += count
-            print("%s\t%d" % (key, count))
+        for key in sorted(counts.keys()):
+            total += counts[key]
+            print("%s\t%d" % (key, counts[key]))
         print("TOTAL\t\t%d" % total)
 
 def compile_regexes():
