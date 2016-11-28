@@ -41,7 +41,7 @@ IN_FIELDNAMES = [
     "Approved Y/N",
     "asset_class",
     "Asset Sub-Class",
-    "coordinates",
+    "coordinates_supplied",
     "Total Project Estimate",
     "Ward Location",
     "New/Renewal",
@@ -79,34 +79,42 @@ class Command(BaseCommand):
         counts = defaultdict(int)
         muni_counts = defaultdict(int)
         with open(options['infile'], 'rb') as infile:
-            with open('unparsed.csv', 'wb') as unmatched_file:
-                reader = csv.DictReader(infile, fieldnames=IN_FIELDNAMES)
-                writer = csv.DictWriter(unmatched_file, fieldnames=PARSED_FIELDNAMES)
-                for row in reader:
-                    match = False
-                    coordstr = row['coordinates'].strip().replace('\xa0', ' ')
-                    for regex_name, regex in compiled_rxs.iteritems():
-                        match = regex.match(coordstr)
-                        if match:
-                            counts[regex_name] += 1
-                            #pprint((regex_name, match.groupdict()))
-                            coords = format_coords(regex_name, match.groupdict())
-                            if coords:
-                                print("%s %s [%s] %s" % (row['demarcation_code'], coords, row['coordinates'], row['proj_desc']))
-                            break
-                    if not match:
-                        #pprint("%s [%s] %s %s" % (row['demarcation_code'], coordstr, row['proj_desc'], row['asset_class']))
-                        counts['no_match'] += 1
-                        muni_counts[row['demarcation_code']] += 1
-            print
-            for muni, count in sorted(muni_counts.iteritems(), key=lambda x: x[1], reverse=True)[0:5]:
-                print("%s\t\t%s" % (muni, count))
-            print
-            total = 0
-            for key in sorted(counts.keys()):
-                total += counts[key]
-                print("%s\t%d" % (key, counts[key]))
-            print("TOTAL\t\t%d" % total)
+            with open('unparsed.csv', 'wb') as unparsed_file:
+                with open('parsed.csv', 'wb') as parsed_file:
+                    reader = csv.DictReader(infile, fieldnames=IN_FIELDNAMES)
+                    unparsed_writer = csv.DictWriter(unparsed_file, fieldnames=IN_FIELDNAMES)
+                    parsed_writer = csv.DictWriter(parsed_file, fieldnames=PARSED_FIELDNAMES)
+                    unparsed_writer.writeheader()
+                    parsed_writer.writeheader()
+                    for row in reader:
+                        match = False
+                        coordstr = row['coordinates_supplied'].strip().replace('\xa0', ' ')
+                        for regex_name, regex in compiled_rxs.iteritems():
+                            match = regex.match(coordstr)
+                            if match:
+                                counts[regex_name] += 1
+                                #pprint((regex_name, match.groupdict()))
+                                coords = format_coords(regex_name, match.groupdict())
+                                if coords:
+                                    row['latitude'] = coords[0]
+                                    row['longitude'] = coords[1]
+                                    parsed_writer.writerow(row)
+                                    print("%s %s [%s] %s" % (row['demarcation_code'], coords, coordstr, row['proj_desc']))
+                                break
+                        if not match:
+                            #pprint("%s [%s] %s %s" % (row['demarcation_code'], coordstr, row['proj_desc'], row['asset_class']))
+                            unparsed_writer.writerow(row)
+                            counts['no_match'] += 1
+                            muni_counts[row['demarcation_code']] += 1
+                print
+                for muni, count in sorted(muni_counts.iteritems(), key=lambda x: x[1], reverse=True)[0:5]:
+                    print("%s\t\t%s" % (muni, count))
+                print
+                total = 0
+                for key in sorted(counts.keys()):
+                    total += counts[key]
+                    print("%s\t%d" % (key, counts[key]))
+                print("TOTAL\t\t%d" % total)
 
 
 def compile_regexes():
