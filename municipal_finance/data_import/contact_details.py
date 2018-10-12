@@ -23,7 +23,7 @@ expected_headings = [
     'Fax Number',
     'NT File No',
     'E-mail Address',
-    '',
+    'Position',
     'ID Number',
     'Title',
     'Name',
@@ -98,19 +98,27 @@ def convert_persons(sheet, person_csv_name):
         for rowx in range(1, sheet.nrows):
             if str(sheet.cell(rowx, col("CAP")).value) not in ['H', 'L', 'M']:
                 continue
-            role = sheet.cell(rowx, col("")).value
+            role = sheet.cell(rowx, col("Position")).value
             check_role(role)
             if role not in output_roles:
                 continue
             item = {
-                'demarcation_code': sheet.cell(rowx, col("Locat Code")).value,
-                'role': role,
-                'title': sheet.cell(rowx, col("Title")).value,
-                'name': clean(sheet.cell(rowx, col("Name"))),
-                'office_number': sheet.cell(rowx, col("Office Phone Number")).value,
+                'demarcation_code':
+                sheet.cell(rowx, col("Locat Code")).value,
+                'role':
+                role,
+                'title':
+                sheet.cell(rowx, col("Title")).value,
+                'name':
+                clean(sheet.cell(rowx, col("Name"))),
+                'office_number':
+                sheet.cell(rowx, col("Office Phone Number")).value,
                 # Hack because Fax Number occurs twice
-                'fax_number': sheet.cell(rowx, col("Cell Number")+1).value,
-                'email_address': sheet.cell(rowx, col("EMAILADD")).value,
+                'fax_number':
+                sheet.cell(rowx,
+                           col("Cell Number") + 1).value,
+                'email_address':
+                sheet.cell(rowx, col("EMAILADD")).value,
             }
             writer.writerow(item)
 
@@ -144,17 +152,28 @@ def convert_muni(sheet, person_csv_name):
                 muni = sheet.cell(rowx, col("Locat Code")).value
 
             item = {
-                'demarcation_code': muni,
-                'postal_address_1': clean(sheet.cell(rowx, col("Postal Address 1"))),
-                'postal_address_2': clean_address(sheet.cell(rowx, col("Postal Address 2"))),
-                'postal_address_3': clean_address(sheet.cell(rowx, col("Postal Address 3"))),
-                'street_address_1': clean(sheet.cell(rowx, col("Street Address 1"))),
-                'street_address_2': clean_address(sheet.cell(rowx, col("Street Address 2"))),
-                'street_address_3': clean_address(sheet.cell(rowx, col("Street Address 3"))),
-                'street_address_4': clean_address(sheet.cell(rowx, col("Street Address 4"))),
-                'phone_number': clean(sheet.cell(rowx, col("Phone Number"))),
-                'fax_number': clean(sheet.cell(rowx, col("Fax Number"))),
-                'url': clean_url(sheet.cell(rowx, col("E-mail Address")).value),
+                'demarcation_code':
+                muni,
+                'postal_address_1':
+                clean(sheet.cell(rowx, col("Postal Address 1"))),
+                'postal_address_2':
+                clean_address(sheet.cell(rowx, col("Postal Address 2"))),
+                'postal_address_3':
+                clean_address(sheet.cell(rowx, col("Postal Address 3"))),
+                'street_address_1':
+                clean(sheet.cell(rowx, col("Street Address 1"))),
+                'street_address_2':
+                clean_address(sheet.cell(rowx, col("Street Address 2"))),
+                'street_address_3':
+                clean_address(sheet.cell(rowx, col("Street Address 3"))),
+                'street_address_4':
+                clean_address(sheet.cell(rowx, col("Street Address 4"))),
+                'phone_number':
+                clean(sheet.cell(rowx, col("Phone Number"))),
+                'fax_number':
+                clean(sheet.cell(rowx, col("Fax Number"))),
+                'url':
+                clean_url(sheet.cell(rowx, col("E-mail Address")).value),
             }
             writer.writerow(item)
 
@@ -175,8 +194,8 @@ def check_columns(headings):
     for colx in range(0, len(headings)):
         heading = headings[colx]
         if heading != expected_headings[colx]:
-            raise Exception("Unexpected heading %r != %r <- expected"
-                            % (heading, expected_headings[colx]))
+            raise Exception("Unexpected heading %r != %r <- expected" %
+                            (heading, expected_headings[colx]))
 
 
 def clean(dirty):
