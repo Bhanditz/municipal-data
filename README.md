@@ -115,22 +115,36 @@ Install some additional dependencies:
 - `pip install bs4` - bs4 is used to scrape audit report URLs
 - `pip install csvkit` - optional - convenient tools for inspecting and querying CSVs
 
-Extract CSV datasets from Excel Spreadsheets using the following scripts in `municipal_finance/data_import/`
 
-- audit_opinions.py
-  - Budget Document Tracking - Reporting > List Audit Opinion
-  - Location Level: Municipality
-  - Financial Year End(s): Control+Click the four years up to and including the last audit result available
-  - Sort Options: By Municipality
-  - Choose Excel 2000 report format
-  - Process Request: The downloaded file has .xls extension but is html - open in libreoffice or excel and save explicitly as .xls again.
-- contact_details.py
-  - Contacts - Reporting > General Information - Municipalities Individuals
-  - Choose Municipal level
-  - Choose relevant roles
-  - Choose Excel 2000 report format
-  - Download report, open in excel, save as xlsx (the website gives HTML in .xls)
-  - Process Request: The downloaded file has .xls extension but is html - open in libreoffice or excel and save explicitly as .xls again.
+Extract CSV datasets from Excel Spreadsheets using the following scripts in `municipal_finance/data_import/`
+Go to [National Treasury Local Government Database](https://lg.treasury.gov.za/iworld/default_prov.htm)
+
+For Audit Opinions
+
+	- Budget Document Tracking - Reporting > List Audit Opinion
+	- Location Level: Municipality
+	- Financial Year End(s): Control+Click the four years up to and including the last audit result available
+	- Sort Options: By Municipality
+	- Choose Excel 2000 report format
+	- Process Request: The downloaded file has .xls extension but is html - open in libreoffice or excel and save explicitly as .xls again.
+This excel file will be processed by the audit_opinions.py file
+
+
+For Contact Details
+
+	- Contacts - Reporting > General Information - Municipalities Individuals
+	- Choose Municipal level
+	- Choose relevant roles
+		- Mayor/Executive Mayor
+		- Municipal Manager
+		- Deputy Mayor/Executive Mayor
+		- Chief Financial Officer
+	- Choose Excel 2000 report format
+	- Download report, open in excel, save as xlsx (the website gives HTML in .xls)
+	- Process Request: The downloaded file has .xls extension but is html - open in libreoffice or excel and save explicitly as .xls again.
+This excel file will be processed by contact_details.py file
+
+
 - uifw_expenditure.py
   - input files like [01. Irregular Expenditures - Master 04 December 2014](http://mfma.treasury.gov.za/Media_Releases/mbi/2014/Documents/G.%20Additional%20information)
 
