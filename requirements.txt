@@ -3,7 +3,7 @@ babbage==0.3.3
 boto==2.39.0
 decorator==4.0.9
 dj-database-url==0.4.1
-Django==1.11.8
+Django==2.2.18
 django-cors-headers==2.1.0
 django-extensions==1.6.1
 django-pipeline==1.6.8
@@ -20,7 +20,7 @@ ipdb==0.9.1
 ipython==4.1.2
 ipython-genutils==0.1.0
 itsdangerous==0.24
-Jinja2==2.8
+Jinja2==2.11.3
 jsonschema==2.5.1
 MarkupSafe==0.23
 newrelic==2.86.1.66
