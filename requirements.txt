@@ -9,7 +9,7 @@ django-extensions==1.6.1
 django-pipeline==1.6.8
 django-wkhtmltopdf==3.0.0
 ecdsa==0.13
-Flask==0.10.1
+Flask==2.2.5
 futures==3.0.5
 gevent==1.2.2
 gnureadline==6.3.3
