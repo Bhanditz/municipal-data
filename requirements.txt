@@ -25,7 +25,7 @@ jsonschema==2.5.1
 MarkupSafe==0.23
 newrelic==2.86.1.66
 normality==0.2.4
-paramiko==1.16.0
+paramiko==3.4.0
 pathlib==1.0.1
 pathlib2==2.1.0
 pexpect==4.0.1
