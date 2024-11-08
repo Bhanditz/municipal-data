@@ -11,7 +11,7 @@ django-wkhtmltopdf==3.0.0
 ecdsa==0.13
 Flask==0.10.1
 futures==3.0.5
-gevent==1.2.2
+gevent==24.10.1
 gnureadline==6.3.3
 grako==3.10.1
 greenlet==0.4.12
